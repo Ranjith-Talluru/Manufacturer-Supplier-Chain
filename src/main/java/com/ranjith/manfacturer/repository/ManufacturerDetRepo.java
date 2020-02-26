@@ -1,5 +1,9 @@
 package com.ranjith.manfacturer.repository;
 
-public interface ManufacturerDetRepo /*extends JpaRepository<Manufacturer,String>*/{
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.ranjith.manfacturer.entity.ManufacturerDetails;
+
+public interface ManufacturerDetRepo extends JpaRepository<ManufacturerDetails,String>{
 
 }
