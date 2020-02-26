@@ -1,9 +1,11 @@
 package com.ranjith.manfacturer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ranjith.manfacturer.request.CommonRequest;
@@ -37,10 +39,10 @@ public class ManfacturerOperations {
 
 	}
 
-	@PostMapping(value = "/get-By-Id", consumes = "application/json", produces = "application/json")
-	public CommonResponse getDetailsByManufacturerId(@RequestBody CommonRequest request) {
+	@GetMapping(value = "/get-By-Id", produces = "application/json")
+	public CommonResponse getDetailsByManufacturerId(@RequestParam("id") String manufactId) {
 
-		return manufactOperServ.getManufacturerDetById(request);
+		return manufactOperServ.getManufacturerDetById(manufactId);
 	}
 
 	@PostMapping(value = "/get-By-Name", consumes = "application/json", produces = "application/json")

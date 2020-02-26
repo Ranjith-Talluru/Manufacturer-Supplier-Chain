@@ -23,12 +23,12 @@ public class ManfacturerOperationsService {
 	@Autowired
 	private ManufacturerUtility manufactUtility;
 
-	public ManufacturerDetailsResponse getManufacturerDetById(CommonRequest request) {
+	public ManufacturerDetailsResponse getManufacturerDetById(String manufactId) {
 		ManufacturerDetailsResponse response = new ManufacturerDetailsResponse();
 		try {
 		
-		List<ManufacturerDetails> manufactDet = manufactRepo.findByManufacturerId(request.getUserName());
-		log.info("Manufacturer Name for Id {}  is  {} ", request.getUserName() ,manufactDet.get(0).toString());
+		List<ManufacturerDetails> manufactDet = manufactRepo.findByManufacturerId(manufactId);
+		log.info("Manufacturer Name for Id {}  is  {} ", manufactId ,manufactDet.get(0).toString());
 		response.setManufacturerDet(manufactDet);
 		response.setMessage(manufactUtility.readProperty("MANU_DET_RET_SUCC"));
 		response.setStatus(manufactUtility.readProperty("0"));
