@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.ranjith.manfacturer.entity.ManufacturerDetails;
 import com.ranjith.manfacturer.repository.ManufacturerDetRepo;
-import com.ranjith.manfacturer.request.CommonRequest;
 import com.ranjith.manfacturer.response.ManufacturerDetailsResponse;
 import com.ranjith.manfacturer.util.ManufacturerUtility;
 
