@@ -1,14 +1,16 @@
 package com.ranjith.manfacturer.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ranjith.manfacturer.request.CommonRequest;
+import com.ranjith.manfacturer.request.ManufacturerDetRequest;
 import com.ranjith.manfacturer.response.CommonResponse;
 import com.ranjith.manfacturer.service.ManfacturerOperationsService;
 
@@ -23,20 +25,18 @@ public class ManfacturerOperations {
 	private ManfacturerOperationsService manufactOperServ;
 
 	@PostMapping(value = "/get-Details", consumes = "application/json", produces = "application/json")
-	public CommonResponse getManfacturerDetails(@RequestBody CommonRequest request) {
+	public CommonResponse getManfacturerDetails(@RequestBody ManufacturerDetRequest request) {
 
 		CommonResponse response = new CommonResponse();
 
 		log.info("**************** Fetching Manfacturer Details **********************");
-		log.info("Pass is " + request.getPassword());
 
-		log.info(" Username is : {} and Pass is : {}", request.getUserName(), request.getPassword());
+		log.info(" Manufact ID is : {} and Name is : {}", request.getManufacturerId(), request.getManufacturerName());
 
 		response.setMessage("Manfacturer Det Retrieved Succesfully");
 		response.setStatus("OK");
 
 		return response;
-
 	}
 
 	
@@ -46,26 +46,26 @@ public class ManfacturerOperations {
 		return manufactOperServ.getManufacturerDetById(manufactId);
 	}
 
-	@PostMapping(value = "/get-By-Name", consumes = "application/json", produces = "application/json")
-	public CommonResponse getDetailsByManufacturerName(@RequestBody CommonRequest request) {
-		CommonResponse response = new CommonResponse();
-		return response;
+	@GetMapping(value = "/get-By-Name", produces = "application/json")
+	public CommonResponse getDetailsByManufacturerName(@RequestParam("manufactName") String manufactName) {
+		
+		 return manufactOperServ.getManufacturerDetByName(manufactName);
 	}
 
-	@PostMapping(value = "/update-By-Id", consumes = "application/json", produces = "application/json")
-	public CommonResponse updateManfacturerById(@RequestBody CommonRequest request) {
+	@PutMapping(value = "/update-By-Id", consumes = "application/json", produces = "application/json")
+	public CommonResponse updateManfacturerById(@RequestBody ManufacturerDetRequest request) {
 		CommonResponse response = new CommonResponse();
 		return response;
 	}
 
 	@PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
-	public CommonResponse addManufacturer(@RequestBody CommonRequest request) {
+	public CommonResponse addManufacturer(@RequestBody ManufacturerDetRequest request) {
 		CommonResponse response = new CommonResponse();
 		return response;
 	}
 
-	@PostMapping(value = "/delete", consumes = "application/json", produces = "application/json")
-	public CommonResponse deleteManufacturer(@RequestBody CommonRequest request) {
+	@DeleteMapping(value = "/delete", consumes = "application/json", produces = "application/json")
+	public CommonResponse deleteManufacturer(@RequestParam("id") String manufactId) {
 		CommonResponse response = new CommonResponse();
 		return response;
 	}
