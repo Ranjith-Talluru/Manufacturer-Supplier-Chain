@@ -18,6 +18,12 @@ public class ManufacturerUtility {
 
 	}
 
+	/**
+	 * This method returns true if the passed String is null or is empty.
+	 * 
+	 * @param String
+	 * @return true | false
+	 */
 	public static boolean hasNullOrEmptyString(String... values) {
 		boolean hasNullOrEmptyString = Stream.of(values).anyMatch(StringUtils::isBlank);
 		return hasNullOrEmptyString;

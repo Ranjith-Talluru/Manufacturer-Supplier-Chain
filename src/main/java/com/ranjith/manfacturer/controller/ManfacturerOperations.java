@@ -28,44 +28,35 @@ public class ManfacturerOperations {
 	public CommonResponse getManfacturerDetails(@RequestBody ManufacturerDetRequest request) {
 
 		CommonResponse response = new CommonResponse();
-
 		log.info("**************** Fetching Manfacturer Details **********************");
-
 		log.info(" Manufact ID is : {} and Name is : {}", request.getManufacturerId(), request.getManufacturerName());
-
 		response.setMessage("Manfacturer Det Retrieved Succesfully");
 		response.setStatus("OK");
-
 		return response;
 	}
 
-	
 	@GetMapping(value = "/get-By-Id", produces = "application/json")
 	public CommonResponse getDetailsByManufacturerId(@RequestParam("id") String manufactId) {
-
 		return manufactOperServ.getManufacturerDetById(manufactId);
 	}
 
 	@GetMapping(value = "/get-By-Name", produces = "application/json")
 	public CommonResponse getDetailsByManufacturerName(@RequestParam("manufactName") String manufactName) {
-		
-		 return manufactOperServ.getManufacturerDetByName(manufactName);
+		return manufactOperServ.getManufacturerDetByName(manufactName);
 	}
 
 	@PutMapping(value = "/update-By-Id", consumes = "application/json", produces = "application/json")
-	public CommonResponse updateManfacturerById(@RequestBody ManufacturerDetRequest request) {
-		CommonResponse response = new CommonResponse();
-		return response;
+	public CommonResponse updateManfacturerById(@RequestBody ManufacturerDetRequest manufactDetUpdateRequ) {
+		return manufactOperServ.updateManfacturerById(manufactDetUpdateRequ);
 	}
 
 	@PostMapping(value = "/add", consumes = "application/json", produces = "application/json")
-	public CommonResponse addManufacturer(@RequestBody ManufacturerDetRequest request) {
-		CommonResponse response = new CommonResponse();
-		return response;
+	public CommonResponse addManufacturer(@RequestBody ManufacturerDetRequest manufactDetAdd) {
+		return manufactOperServ.addManufacturer(manufactDetAdd);
 	}
 
-	@DeleteMapping(value = "/delete", consumes = "application/json", produces = "application/json")
-	public CommonResponse deleteManufacturer(@RequestParam("id") String manufactId) {
+	@DeleteMapping(value = "/delete", produces = "application/json")
+	public CommonResponse deleteManufacturerById(@RequestParam("id") String manufactId) {
 		CommonResponse response = new CommonResponse();
 		return response;
 	}

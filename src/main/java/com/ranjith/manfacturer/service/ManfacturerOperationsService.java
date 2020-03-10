@@ -37,16 +37,17 @@ public class ManfacturerOperationsService {
 	}
 
 	public ManufacturerDetailsResponse getManufacturerDetById(String manufactId) {
+		log.info("------------------- Manufact Oper Serv getManufacturerDetById  -------------------");
 		ManufacturerDetailsResponse response = new ManufacturerDetailsResponse();
 		try {
-		
-		List<ManufacturerDetails> manufactDet = manufactRepo.findByManufacturerId(manufactId);
-		log.info("Manufacturer Name for Id {}  is  {} ", manufactId ,manufactDet.get(0).toString());
-		response.setManufacturerDet(manufactDet);
-		response.setMessage(manufactUtility.readProperty("MANU_DET_RET_SUCC"));
-		response.setStatus(manufactUtility.readProperty("0"));
-		}catch (Exception e) {
-			log.info("Exception Occurred Due to :: {}",e);
+
+			List<ManufacturerDetails> manufactDet = manufactRepo.findByManufacturerId(manufactId);
+			log.info("Manufacturer Name for Id {}  is  {} ", manufactId, manufactDet.get(0).toString());
+			response.setManufacturerDet(manufactDet);
+			response.setMessage(manufactUtility.readProperty("MANU_DET_RET_SUCC"));
+			response.setStatus(manufactUtility.readProperty("0"));
+		} catch (Exception e) {
+			log.info("Exception Occurred Due to :: {}", e);
 			response.setMessage(manufactUtility.readProperty("DEF_MSG"));
 			response.setStatus(manufactUtility.readProperty("1"));
 		}
@@ -54,6 +55,7 @@ public class ManfacturerOperationsService {
 	}
 	
 	public ManufacturerDetailsResponse getManufacturerDetByName(String manufactName) {
+		log.info("------------------- Manufact Oper Serv getManufacturerDetByName  -------------------");
 		ManufacturerDetailsResponse response = new ManufacturerDetailsResponse();
 		try {
 		
@@ -70,20 +72,67 @@ public class ManfacturerOperationsService {
 		return response;
 	}
 	
+
+	/**
+	 * @param manufactDet
+	 *  
+	 * Used Hibernate Implementation to Update Details
+	 */
 	public ManufacturerDetailsResponse updateManfacturerById(ManufacturerDetRequest manufactDet) {
+		log.info("------------------- Manufact Oper Serv updateManfacturerById  -------------------");
 		ManufacturerDetailsResponse response = new ManufacturerDetailsResponse();
 		try {
 			ManufacturerDetails manufactDetSave = new ManufacturerDetails();
-			boolean isNullOrEmpty = manufactUtility.hasNullOrEmptyString(manufactDet.getManufacturerId(),manufactDet.getManufacturerName(),manufactDet.getManufacturerVehicleType(),manufactDet.getManufacturerZipcode(),manufactDet.getManufacturerPhone());
-			if(isNullOrEmpty) {
+			boolean isNullOrEmpty = manufactUtility.hasNullOrEmptyString(manufactDet.getManufacturerId(),
+					manufactDet.getManufacturerName(), manufactDet.getManufacturerVehicleType(),
+					manufactDet.getManufacturerZipcode(), manufactDet.getManufacturerPhone());
+			if (isNullOrEmpty) {
+				manufactDetSave.setManufacturerId(manufactDet.getManufacturerId());
+				manufactDetSave.setManufacturerName(manufactDet.getManufacturerName());
+				manufactDetSave.setManufacturerPhone(manufactDet.getManufacturerPhone());
+				manufactDetSave.setManufacturerVehicleType(manufactDet.getManufacturerVehicleType());
+				manufactDetSave.setManufacturerZipcode(manufactDet.getManufacturerZipcode());
 				hibernateTemplate.saveOrUpdate(manufactDetSave);
 				response.setMessage(manufactUtility.readProperty("MANU_DET_SAVE_SUCC"));
 				response.setStatus(manufactUtility.readProperty("0"));
-			}else {
+			} else {
 				response.setMessage(manufactUtility.readProperty("FIELDS_MISSING"));
 				response.setStatus(manufactUtility.readProperty("1"));
 			}
-			
+
+		} catch (Exception e) {
+			log.info("Exception Occurred Due to :: {}", e);
+			response.setMessage(manufactUtility.readProperty("DEF_MSG"));
+			response.setStatus(manufactUtility.readProperty("1"));
+		}
+		return response;
+	}
+	
+	public ManufacturerDetailsResponse addManufacturer(ManufacturerDetRequest manufactDet) {
+		log.info("------------------- Manufact Oper Serv addManufacturer  -------------------");
+		ManufacturerDetailsResponse response = new ManufacturerDetailsResponse();
+		try {
+			ManufacturerDetails manufactDetSave = new ManufacturerDetails();
+			boolean isNullOrEmpty = manufactUtility.hasNullOrEmptyString(manufactDet.getManufacturerId(),
+					manufactDet.getManufacturerName(), manufactDet.getManufacturerEmailId(),manufactDet.getManufacturerAddress(), manufactDet.getManufacturerVehicleType(),
+					manufactDet.getManufacturerZipcode(), manufactDet.getManufacturerPhone());
+			if (isNullOrEmpty) {
+				
+				manufactDetSave.setManufacturerId(manufactDet.getManufacturerId());
+				manufactDetSave.setManufacturerName(manufactDet.getManufacturerName());
+				manufactDetSave.setManufacturerPhone(manufactDet.getManufacturerPhone());
+				manufactDetSave.setManufacturerEmailId(manufactDet.getManufacturerEmailId());
+				manufactDetSave.setManufacturerAddress(manufactDet.getManufacturerAddress());
+				manufactDetSave.setManufacturerVehicleType(manufactDet.getManufacturerVehicleType());
+				manufactDetSave.setManufacturerZipcode(manufactDet.getManufacturerZipcode());
+				manufactRepo.save(manufactDetSave);
+				response.setMessage(manufactUtility.readProperty("MANU_DET_SAVE_SUCC"));
+				response.setStatus(manufactUtility.readProperty("0"));
+			} else {
+				response.setMessage(manufactUtility.readProperty("FIELDS_MISSING"));
+				response.setStatus(manufactUtility.readProperty("1"));
+			}
+
 		} catch (Exception e) {
 			log.info("Exception Occurred Due to :: {}", e);
 			response.setMessage(manufactUtility.readProperty("DEF_MSG"));
@@ -92,4 +141,20 @@ public class ManfacturerOperationsService {
 		return response;
 	}
 
+	public ManufacturerDetailsResponse deleteManufacturerDetById(String manufactId) {
+		log.info("------------------- Manufact Oper Serv deleteManufacturerDetById  -------------------");
+		ManufacturerDetailsResponse response = new ManufacturerDetailsResponse();
+		try {
+
+			manufactRepo.deleteByManufacturerId(manufactId);
+			log.info("ManufacturerId {} Deleted  ", manufactId);
+			response.setMessage(manufactUtility.readProperty("MANU_DET_RET_SUCC"));
+			response.setStatus(manufactUtility.readProperty("0"));
+		} catch (Exception e) {
+			log.info("Exception Occurred Due to :: {}", e);
+			response.setMessage(manufactUtility.readProperty("DEF_MSG"));
+			response.setStatus(manufactUtility.readProperty("1"));
+		}
+		return response;
+	}
 }

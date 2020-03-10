@@ -15,5 +15,7 @@ public interface ManufacturerDetRepo extends JpaRepository<ManufacturerDetails,S
 	public List<ManufacturerDetails> findByManufacturerId(String manufactId);
 	
 	public List<ManufacturerDetails> findByManufacturerName(String manufactName);
+	
+	public void deleteByManufacturerId(String manufactId);
 
 }
