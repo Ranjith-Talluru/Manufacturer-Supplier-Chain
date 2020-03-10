@@ -57,8 +57,7 @@ public class ManfacturerOperations {
 
 	@DeleteMapping(value = "/delete", produces = "application/json")
 	public CommonResponse deleteManufacturerById(@RequestParam("id") String manufactId) {
-		CommonResponse response = new CommonResponse();
-		return response;
+		return manufactOperServ.deleteManufacturerDetById(manufactId);
 	}
 
 }

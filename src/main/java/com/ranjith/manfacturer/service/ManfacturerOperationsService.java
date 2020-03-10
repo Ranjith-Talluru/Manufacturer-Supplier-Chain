@@ -1,11 +1,10 @@
 package com.ranjith.manfacturer.service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
 import com.ranjith.manfacturer.entity.ManufacturerDetails;
@@ -20,21 +19,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @SuppressWarnings("all")
 public class ManfacturerOperationsService {
-	
+
 	@Autowired
 	private ManufacturerDetRepo manufactRepo;
-	
+
 	@Autowired
 	private ManufacturerUtility manufactUtility;
-	
-	private HibernateTemplate hibernateTemplate;
-	private Session session;
-	
-	@Autowired
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		hibernateTemplate = new HibernateTemplate(sessionFactory);
-		session = sessionFactory.openSession();
-	}
 
 	public ManufacturerDetailsResponse getManufacturerDetById(String manufactId) {
 		log.info("------------------- Manufact Oper Serv getManufacturerDetById  -------------------");
@@ -42,7 +32,7 @@ public class ManfacturerOperationsService {
 		try {
 
 			List<ManufacturerDetails> manufactDet = manufactRepo.findByManufacturerId(manufactId);
-			log.info("Manufacturer Name for Id {}  is  {} ", manufactId, manufactDet.get(0).toString());
+			log.info("Manufacturer Details Retrievd from DB If founf for Id :: {}",manufactId);
 			response.setManufacturerDet(manufactDet);
 			response.setMessage(manufactUtility.readProperty("MANU_DET_RET_SUCC"));
 			response.setStatus(manufactUtility.readProperty("0"));
@@ -53,30 +43,28 @@ public class ManfacturerOperationsService {
 		}
 		return response;
 	}
-	
+
 	public ManufacturerDetailsResponse getManufacturerDetByName(String manufactName) {
 		log.info("------------------- Manufact Oper Serv getManufacturerDetByName  -------------------");
 		ManufacturerDetailsResponse response = new ManufacturerDetailsResponse();
 		try {
-		
-		List<ManufacturerDetails> manufactDet = manufactRepo.findByManufacturerName(manufactName);
-		log.info("Manufacturer Details are  {} " ,manufactDet.get(0).toString());
-		response.setManufacturerDet(manufactDet);
-		response.setMessage(manufactUtility.readProperty("MANU_DET_RET_SUCC"));
-		response.setStatus(manufactUtility.readProperty("0"));
-		}catch (Exception e) {
-			log.info("Exception Occurred Due to :: {}",e);
+
+			List<ManufacturerDetails> manufactDet = manufactRepo.findByManufacturerName(manufactName);
+			log.info("Manufacturer Details are  {} ", manufactDet.get(0).toString());
+			response.setManufacturerDet(manufactDet);
+			response.setMessage(manufactUtility.readProperty("MANU_DET_RET_SUCC"));
+			response.setStatus(manufactUtility.readProperty("0"));
+		} catch (Exception e) {
+			log.info("Exception Occurred Due to :: {}", e);
 			response.setMessage(manufactUtility.readProperty("DEF_MSG"));
 			response.setStatus(manufactUtility.readProperty("1"));
 		}
 		return response;
 	}
-	
 
 	/**
 	 * @param manufactDet
-	 *  
-	 * Used Hibernate Implementation to Update Details
+	 * 
 	 */
 	public ManufacturerDetailsResponse updateManfacturerById(ManufacturerDetRequest manufactDet) {
 		log.info("------------------- Manufact Oper Serv updateManfacturerById  -------------------");
@@ -86,13 +74,14 @@ public class ManfacturerOperationsService {
 			boolean isNullOrEmpty = manufactUtility.hasNullOrEmptyString(manufactDet.getManufacturerId(),
 					manufactDet.getManufacturerName(), manufactDet.getManufacturerVehicleType(),
 					manufactDet.getManufacturerZipcode(), manufactDet.getManufacturerPhone());
-			if (isNullOrEmpty) {
+			if (!isNullOrEmpty) {
 				manufactDetSave.setManufacturerId(manufactDet.getManufacturerId());
 				manufactDetSave.setManufacturerName(manufactDet.getManufacturerName());
 				manufactDetSave.setManufacturerPhone(manufactDet.getManufacturerPhone());
 				manufactDetSave.setManufacturerVehicleType(manufactDet.getManufacturerVehicleType());
 				manufactDetSave.setManufacturerZipcode(manufactDet.getManufacturerZipcode());
-				hibernateTemplate.saveOrUpdate(manufactDetSave);
+				manufactDetSave.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
+				manufactRepo.save(manufactDetSave);
 				response.setMessage(manufactUtility.readProperty("MANU_DET_SAVE_SUCC"));
 				response.setStatus(manufactUtility.readProperty("0"));
 			} else {
@@ -107,17 +96,19 @@ public class ManfacturerOperationsService {
 		}
 		return response;
 	}
-	
+
 	public ManufacturerDetailsResponse addManufacturer(ManufacturerDetRequest manufactDet) {
 		log.info("------------------- Manufact Oper Serv addManufacturer  -------------------");
 		ManufacturerDetailsResponse response = new ManufacturerDetailsResponse();
 		try {
 			ManufacturerDetails manufactDetSave = new ManufacturerDetails();
+			log.info("Manufacturer Addition :: Manufact Det ::  {} "+ manufactDet.toString());
 			boolean isNullOrEmpty = manufactUtility.hasNullOrEmptyString(manufactDet.getManufacturerId(),
-					manufactDet.getManufacturerName(), manufactDet.getManufacturerEmailId(),manufactDet.getManufacturerAddress(), manufactDet.getManufacturerVehicleType(),
+					manufactDet.getManufacturerName(), manufactDet.getManufacturerEmailId(),
+					manufactDet.getManufacturerAddress(), manufactDet.getManufacturerVehicleType(),
 					manufactDet.getManufacturerZipcode(), manufactDet.getManufacturerPhone());
-			if (isNullOrEmpty) {
-				
+			if (!isNullOrEmpty) {
+
 				manufactDetSave.setManufacturerId(manufactDet.getManufacturerId());
 				manufactDetSave.setManufacturerName(manufactDet.getManufacturerName());
 				manufactDetSave.setManufacturerPhone(manufactDet.getManufacturerPhone());
@@ -125,6 +116,7 @@ public class ManfacturerOperationsService {
 				manufactDetSave.setManufacturerAddress(manufactDet.getManufacturerAddress());
 				manufactDetSave.setManufacturerVehicleType(manufactDet.getManufacturerVehicleType());
 				manufactDetSave.setManufacturerZipcode(manufactDet.getManufacturerZipcode());
+				manufactDetSave.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
 				manufactRepo.save(manufactDetSave);
 				response.setMessage(manufactUtility.readProperty("MANU_DET_SAVE_SUCC"));
 				response.setStatus(manufactUtility.readProperty("0"));
@@ -145,9 +137,8 @@ public class ManfacturerOperationsService {
 		log.info("------------------- Manufact Oper Serv deleteManufacturerDetById  -------------------");
 		ManufacturerDetailsResponse response = new ManufacturerDetailsResponse();
 		try {
-
+			log.info( "Deleting ManufacturerId {}  ", manufactId);
 			manufactRepo.deleteByManufacturerId(manufactId);
-			log.info("ManufacturerId {} Deleted  ", manufactId);
 			response.setMessage(manufactUtility.readProperty("MANU_DET_RET_SUCC"));
 			response.setStatus(manufactUtility.readProperty("0"));
 		} catch (Exception e) {

@@ -1,5 +1,7 @@
 package com.ranjith.manfacturer.entity;
 
+import java.sql.Timestamp;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -8,7 +10,7 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "manfacturer_details", schema="public")
+@Table(name = "manfacturer_details", schema = "public")
 @Data
 
 public class ManufacturerDetails {
@@ -25,7 +27,7 @@ public class ManufacturerDetails {
 
 	@Column(name = "MFG_EMAIL")
 	private String manufacturerEmailId;
-	
+
 	@Column(name = "MFG_ADDRESS")
 	private String manufacturerAddress;
 
@@ -34,8 +36,8 @@ public class ManufacturerDetails {
 
 	@Column(name = "MFG_VEHICLE_TYPES")
 	private String manufacturerVehicleType;
-	
+
 	@Column(name = "CREATED_ON")
-	private String createdOn;
+	private Timestamp createdOn;
 
 }
