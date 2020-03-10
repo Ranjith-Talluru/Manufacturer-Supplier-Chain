@@ -39,6 +39,7 @@ public class ManfacturerOperations {
 
 	}
 
+	
 	@GetMapping(value = "/get-By-Id", produces = "application/json")
 	public CommonResponse getDetailsByManufacturerId(@RequestParam("id") String manufactId) {
 
