@@ -80,7 +80,7 @@ public class ManfacturerOperationsService {
 				manufactDetSave.setManufacturerPhone(manufactDet.getManufacturerPhone());
 				manufactDetSave.setManufacturerVehicleType(manufactDet.getManufacturerVehicleType());
 				manufactDetSave.setManufacturerZipcode(manufactDet.getManufacturerZipcode());
-				manufactDetSave.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
+				manufactDetSave.setCreatedOn(LocalDateTime.now());
 				manufactRepo.save(manufactDetSave);
 				response.setMessage(manufactUtility.readProperty("MANU_DET_SAVE_SUCC"));
 				response.setStatus(manufactUtility.readProperty("0"));
@@ -116,7 +116,7 @@ public class ManfacturerOperationsService {
 				manufactDetSave.setManufacturerAddress(manufactDet.getManufacturerAddress());
 				manufactDetSave.setManufacturerVehicleType(manufactDet.getManufacturerVehicleType());
 				manufactDetSave.setManufacturerZipcode(manufactDet.getManufacturerZipcode());
-				manufactDetSave.setCreatedOn(Timestamp.valueOf(LocalDateTime.now()));
+				manufactDetSave.setCreatedOn(LocalDateTime.now());
 				manufactRepo.save(manufactDetSave);
 				response.setMessage(manufactUtility.readProperty("MANU_DET_SAVE_SUCC"));
 				response.setStatus(manufactUtility.readProperty("0"));

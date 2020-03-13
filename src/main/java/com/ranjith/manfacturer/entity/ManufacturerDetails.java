@@ -1,11 +1,16 @@
 package com.ranjith.manfacturer.entity;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.ranjith.manfacturer.util.CustomDateFormatCreator;
+import com.ranjith.manfacturer.util.LocalDateTimeAttributeConverter;
 
 import lombok.Data;
 
@@ -36,8 +41,10 @@ public class ManufacturerDetails {
 
 	@Column(name = "MFG_VEHICLE_TYPES")
 	private String manufacturerVehicleType;
-
+	
+	@JsonSerialize(using = CustomDateFormatCreator.class) 
+	@Convert(converter = LocalDateTimeAttributeConverter.class)
 	@Column(name = "CREATED_ON")
-	private Timestamp createdOn;
+	private LocalDateTime createdOn;
 
 }
