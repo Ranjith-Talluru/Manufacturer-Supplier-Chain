@@ -32,7 +32,7 @@ public class ManfacturerOperationsService {
 		try {
 
 			List<ManufacturerDetails> manufactDet = manufactRepo.findByManufacturerId(manufactId);
-			log.info("Manufacturer Details Retrievd from DB If founf for Id :: {}",manufactId);
+			log.info("Manufacturer Details Retrieved from DB If founf for Id :: {}",manufactId);
 			response.setManufacturerDet(manufactDet);
 			response.setMessage(manufactUtility.readProperty("MANU_DET_RET_SUCC"));
 			response.setStatus(manufactUtility.readProperty("0"));
@@ -62,10 +62,7 @@ public class ManfacturerOperationsService {
 		return response;
 	}
 
-	/**
-	 * @param manufactDet
-	 * 
-	 */
+
 	public ManufacturerDetailsResponse updateManfacturerById(ManufacturerDetRequest manufactDet) {
 		log.info("------------------- Manufact Oper Serv updateManfacturerById  -------------------");
 		ManufacturerDetailsResponse response = new ManufacturerDetailsResponse();
